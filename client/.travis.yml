@@ -1,0 +1,21 @@
+sudo: required
+services: 
+  - docker
+
+before_install: 
+  - docker build -t bigiayomide/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run bigiayomide/react-test npm test -- --coverage
+
+
+after_success:
+  - docker build -t  bigiayomide/multi-client ./client
+  - docker build -t  bigiayomide/multi-nginx ./nginx
+  - docker build -t  bigiayomide/multi-server ./server
+  - docker build -t  bigiayomide/multi-worker ./worker
+  - echo "$Password" | docker login -u "$Username" --password-stdin
+  - docker push bigiayomide/multi-nginx
+  - docker push bigiayomide/multi-client
+  - docker push bigiayomide/multi-server
+  - docker push bigiayomide/multi-worker
