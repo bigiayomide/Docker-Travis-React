@@ -1,0 +1,6 @@
+postgrress Instance multi-docker-postgres
+postgres
+postgres_password
+dbname=fibvalues
+
+Redis 
